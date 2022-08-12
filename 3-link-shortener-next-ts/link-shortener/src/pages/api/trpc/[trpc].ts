@@ -10,6 +10,7 @@ export const appRouter = trpc
 			slug: z.string(),
 		}),
 		async resolve({ input }) {
+			console.log('Hitted slugCheck query resolve [trpc].ts');
 			const count = await prisma.shortLink.count({
 				where: {
 					slug: input.slug,
@@ -24,6 +25,7 @@ export const appRouter = trpc
 			url: z.string(),
 		}),
 		async resolve({ input }) {
+			console.log('Hitted createSlug mutation resolve [trpc].ts');
 			try {
 				await prisma.shortLink.create({
 					data: {
