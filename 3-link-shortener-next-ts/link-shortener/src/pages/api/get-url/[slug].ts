@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { prisma } from '../../../db/client';
+import { prisma } from '../../../server/db/client';
 
 const getURL = async (req: NextApiRequest, res: NextApiResponse) => {
 	console.log('Hitted getURL [slug].ts');

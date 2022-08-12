@@ -18,15 +18,37 @@ model ShortLink {
 
   url String @db.VarChar(2000)
 
-  slug String @unique
-  // User User[]
+  slug      String @unique
+  creator   User?  @relation(fields: [creatorId], references: [id])
+  creatorId Int?
 
   @@index(slug)
 }
 
-// model User {
-//   id Int @id @default(autoincrement())
+model User {
+  id Int @id @default(autoincrement())
 
-//   shortLink ShortLink @relation(fields: [shortLinkId], references: [id], onDelete: Cascade)
-//   shortLinkId Int
-// }
+  username  String   @unique
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+
+  shortLinkIds ShortLink[]
+  sessions     Session[]
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       Int
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

@@ -1,11 +1,16 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
+import { SessionProvider } from 'next-auth/react';
 import { withTRPC } from '@trpc/next';
-import { AppRouter } from './api/trpc/[trpc]';
+import { ServerRouter } from '../server/router/router';
 
 function MyApp({ Component, pageProps }: AppProps) {
 	console.log('Hitted MyApp _app.tsx');
-	return <Component {...pageProps} />;
+	return (
+		<SessionProvider session={pageProps.session}>
+			<Component {...pageProps} />;
+		</SessionProvider>
+	);
 }
 
 function getBaseUrl() {
@@ -16,8 +21,8 @@ function getBaseUrl() {
 	return `https://localhost:${process.env.PORT ?? 3000}`;
 }
 
-export default withTRPC<AppRouter>({
-	config() {
+export default withTRPC<ServerRouter>({
+	config({ ctx }) {
 		console.log('Hitted withTRPC config _app.tsx');
 		const url = `${getBaseUrl()}/api/trpc`;
 

@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
+import Layout from '../components/layout';
 
 const CreateLinkForm = dynamic(() => import('../components/create-link'), {
 	ssr: false,
@@ -8,11 +9,13 @@ const CreateLinkForm = dynamic(() => import('../components/create-link'), {
 
 const Home: NextPage = () => {
 	return (
-		<div className='flex flex-col justify-center items-center h-screen bg-gray-950 text-white'>
-			<Suspense>
-				<CreateLinkForm />
-			</Suspense>
-		</div>
+		<Suspense>
+			<Layout>
+				<div className='flex flex-col justify-center items-center'>
+					<CreateLinkForm />
+				</div>
+			</Layout>
+		</Suspense>
 	);
 };
 
